@@ -37,6 +37,9 @@ class Cella:
     def falak(self, value):
         self._falak = value
 
+    def falListaba(self)->list:
+        return [self.fent, self.jobb, self.lent, self.bal]
+
 
 print(Cella(True,True,False,False))
 
