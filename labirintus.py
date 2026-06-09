@@ -1,3 +1,4 @@
+import string
 import sys
 import turtle
 import random
@@ -103,6 +104,27 @@ def helyreEro(randi:int,randj:int,meret:float,cel=True):
     if cel:
         turtle.back(randj * meret + (meret / 2))
 
+def lepesMegtetel(lepes:string,meret:float,iranyi:int,iranyj:int,rajzol:bool=False):
+    szogek={'fel':-90, 'jobb':0, 'le':90, 'bal':180}
+    helyzet={'fel':(-1,0),'le':(1,0),'jobb':(0,1),'bal':(0,-1)}
+    turtle.penup()
+    if rajzol:
+        turtle.pendown()
+        turtle.color('red')
+        turtle.width(3)
+    try:
+        turtle.right(szogek[lepes])
+        iranyi+=helyzet[lepes][0]
+        iranyj += helyzet[lepes][1]
+        turtle.forward(meret)
+        turtle.right(-szogek[lepes])
+    except:
+        print("Hiba történt, nem megfelelő az irány, amit megadott!")
+    return iranyi, iranyj
+
+
+
+
 
 
 
@@ -129,14 +151,14 @@ def main():
             if randi!=randk or randj!=randl:
                 break
 
-        cellabirintuscella=(randi,randj)
-        startlabirintuscella=(randk,randl)
+
         turtle.tracer(0)
         helyreEro(randi,randj,meret)
         turtle.update()
         turtle.tracer(0)
         helyreEro(randk, randl, meret,False)
         turtle.update()
+
 
 
         turtle.done()
