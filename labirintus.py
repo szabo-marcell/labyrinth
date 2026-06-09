@@ -85,22 +85,65 @@ def  labirintusRajzolo(labirintus:Labirintus,meret:float):
         turtle.forward(meret)
         turtle.pendown()
         turtle.right(-90)
+    turtle.left(90)
+    turtle.forward(len(tabla)*meret)
+    turtle.left(-90)
+
+def helyreEro(randi:int,randj:int,meret:float,cel=True):
+    turtle.penup()
+    turtle.forward(randj * meret + (meret / 2))
+    turtle.right(90)
+    turtle.forward(randi * meret + (meret / 2))
+    if cel:
+        turtle.pendown()
+        turtle.dot(5,"purple")
+        turtle.penup()
+        turtle.back(randi * meret + (meret / 2))
+    turtle.right(-90)
+    if cel:
+        turtle.back(randj * meret + (meret / 2))
+
 
 
 
 
 def main():
-    turtle.penup()
-    turtle.goto(-200,200)
-    turtle.pendown()
     try:
+        meret=40.0
+        turtle.penup()
+        turtle.goto(-200, 200)
+        turtle.pendown()
+        turtle.tracer(0)
         labirintus=Labirintus(int(sys.argv[1]),int(sys.argv[2]))
-    except Exception as e:
-        print(e.message)
+        turtle.update()
+        labirintusRajzolo(labirintus,meret)
+        randi=0
+        randj=0
+        randk=0
+        randl=0
+        while(True):
+            randi = random.randint(0, int(sys.argv[1])-1)
+            randj = random.randint(0, int(sys.argv[2])-1)
+            randk = random.randint(0, int(sys.argv[1])-1)
+            randl = random.randint(0, int(sys.argv[2])-1)
+            if randi!=randk or randj!=randl:
+                break
 
-    labirintusRajzolo(labirintus,40)
-    turtle.done()
-    gollabirntuscella=ra
+        cellabirintuscella=(randi,randj)
+        startlabirintuscella=(randk,randl)
+        turtle.tracer(0)
+        helyreEro(randi,randj,meret)
+        turtle.update()
+        turtle.tracer(0)
+        helyreEro(randk, randl, meret,False)
+        turtle.update()
+
+
+        turtle.done()
+
+    except ValueError as e:
+        print(e)
+
 
 if __name__ == '__main__':
     main()
