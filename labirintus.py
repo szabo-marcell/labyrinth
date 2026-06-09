@@ -1,4 +1,3 @@
-import string
 import sys
 import turtle
 import random
@@ -8,23 +7,17 @@ from cella import Cella
 
 class Labirintus:
 
-    def __init__(self):
-        self._tabla=[]
-
-    def __init__(self,tabla):
-        self._tabla=tabla
-
     def __init__(self, sorok, oszlopok):
         self._tabla = [[Cella(True, True, True, True)
                        for _ in range(oszlopok)] for _ in range(sorok)]
         latogatott = [[False] * oszlopok for _ in range(sorok)]
-        ellentetes = {'fent': 'lent', 'lent': 'fent', 'jobb': 'bal', 'bal': 'jobb'}
+        ellentetes = {'fel': 'le', 'le': 'fel', 'jobb': 'bal', 'bal': 'jobb'}
 
         def szomszedok(r, c):
             iranyok = []
-            if r > 0 and not latogatott[r-1][c]: iranyok.append(('fent', r-1, c))
+            if r > 0 and not latogatott[r-1][c]: iranyok.append(('fel', r-1, c))
             if c < oszlopok-1 and not latogatott[r][c+1]: iranyok.append(('jobb', r, c+1))
-            if r < sorok-1 and not latogatott[r+1][c]: iranyok.append(('lent', r+1, c))
+            if r < sorok-1 and not latogatott[r+1][c]: iranyok.append(('le', r+1, c))
             if c > 0 and not latogatott[r][c-1]: iranyok.append(('bal', r, c-1))
             return iranyok
 
@@ -54,10 +47,12 @@ class Labirintus:
         self._tabla = ujtabla
 
     def __str__(self):
-       for i in range(len(self.tabla)):
-           for j in range(len(self.tabla[i])):
-               print(self.tabla[i][j].falszam(),end=",")
-           print()
+        result = ''
+        for i in range(len(self.tabla)):
+            for j in range(len(self.tabla[i])):
+                result += str(self.tabla[i][j].falszam()) + ','
+            result += '\n'
+        return result
 
 
 
@@ -104,7 +99,8 @@ def helyreEro(randi:int,randj:int,meret:float,cel=True):
     if cel:
         turtle.back(randj * meret + (meret / 2))
 
-def lepesMegtetel(lepes:string,meret:float,iranyi:int,iranyj:int,rajzol:bool=False):
+def lepesMegtetel(lepes:str,meret:float,helyi:int,helyj:int,labirintus:Labirintus,rajzol:bool):
+    turtle.tracer(0)
     szogek={'fel':-90, 'jobb':0, 'le':90, 'bal':180}
     helyzet={'fel':(-1,0),'le':(1,0),'jobb':(0,1),'bal':(0,-1)}
     turtle.penup()
@@ -113,20 +109,27 @@ def lepesMegtetel(lepes:string,meret:float,iranyi:int,iranyj:int,rajzol:bool=Fal
         turtle.color('red')
         turtle.width(3)
     try:
+        if (labirintus.tabla[helyi][helyj]).vanFal(lepes):
+            print("Sajnos ebben az irányban fal van!")
+            return helyi, helyj
         turtle.right(szogek[lepes])
-        iranyi+=helyzet[lepes][0]
-        iranyj += helyzet[lepes][1]
+        helyi+=helyzet[lepes][0]
+        helyj += helyzet[lepes][1]
         turtle.forward(meret)
         turtle.right(-szogek[lepes])
     except:
-        print("Hiba történt, nem megfelelő az irány, amit megadott!")
-    return iranyi, iranyj
+        print("Hiba történt, nnem létezik olyan irány, amit megadott!")
+    turtle.update()
+    return helyi,helyj
 
-
-
-
-
-
+def jatek(helyi:int,helyj:int,celi:int,celj:int,labirintus:Labirintus,
+          meret:float, rajzol:bool=False):
+    print("---A játék elkezdődik.---")
+    while(helyi!=celi or helyj!=celj):
+        print("Kérem a következő lépésed! Írd be azt, hogy:(fel,jobb,le vagy bal)!")
+        lepes=input()
+        helyi,helyj=lepesMegtetel(lepes,meret,helyi,helyj,labirintus,rajzol)
+    print("---Vége a játéknak.Elérted a célt.---")
 
 
 def main():
@@ -151,16 +154,13 @@ def main():
             if randi!=randk or randj!=randl:
                 break
 
-
         turtle.tracer(0)
         helyreEro(randi,randj,meret)
         turtle.update()
         turtle.tracer(0)
         helyreEro(randk, randl, meret,False)
         turtle.update()
-
-
-
+        jatek(randk,randl,randi,randj,labirintus,meret,False)
         turtle.done()
 
     except ValueError as e:

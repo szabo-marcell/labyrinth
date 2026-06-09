@@ -1,25 +1,29 @@
+
 class Cella:
     def __init__(self,fent:bool,jobb:bool,lent:bool, bal:bool):
-        self.falak= {'fent': 1 if fent else 0, 'jobb': 1 if jobb else 0, 'lent': 1 if lent else 0,
+        self.falak= {'fel': 1 if fent else 0, 'jobb': 1 if jobb else 0, 'le': 1 if lent else 0,
                      'bal': 1 if bal else 0}
     def falszam(self):
-        return self.falak['fent']+self.falak['lent']+self.falak['bal']+self.falak['jobb']
+        return self.falak['fel']+self.falak['le']+self.falak['bal']+self.falak['jobb']
 
     @property
     def jobb(self):
         return self.falak['jobb']
 
     @property
-    def fent(self):
-        return self.falak['fent']
+    def fel(self):
+        return self.falak['fel']
 
     @property
     def bal(self):
         return self.falak['bal']
 
     @property
-    def lent(self):
-        return self.falak['lent']
+    def le(self):
+        return self.falak['le']
+
+    def vanFal(self,irany:str):
+        return self.falak[irany]
 
     @property
     def falak(self):
@@ -27,9 +31,9 @@ class Cella:
 
     def __str__(self):
         result = ''
-        if self.falak['fent'] == 1: result += 'F'
+        if self.falak['fel'] == 1: result += 'F'
         if self.falak['jobb'] == 1: result += 'J'
-        if self.falak['lent'] == 1: result += 'L'
+        if self.falak['le'] == 1: result += 'L'
         if self.falak['bal'] == 1: result += 'B'
         return result
 
@@ -38,8 +42,8 @@ class Cella:
         self._falak = value
 
     def falListaba(self)->list:
-        return [self.fent, self.jobb, self.lent, self.bal]
+        return [self.fel, self.jobb, self.le, self.bal]
 
 
-print(Cella(True,True,False,False))
+#print(Cella(True,True,False,False))
 
