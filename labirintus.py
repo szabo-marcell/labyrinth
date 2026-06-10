@@ -50,7 +50,7 @@ class Labirintus:
         result = ''
         for i in range(len(self.tabla)):
             for j in range(len(self.tabla[i])):
-                result += str(self.tabla[i][j].falszam()) + ','
+                result += str(self.tabla[i][j]) + ','
             result += '\n'
         return result
 
@@ -133,13 +133,14 @@ def jatek(helyi:int,helyj:int,celi:int,celj:int,labirintus:Labirintus,
 
 
 def main():
+    labirintus=Labirintus(int(sys.argv[1]), int(sys.argv[2]))
+    print(labirintus)
     try:
         meret=40.0
         turtle.penup()
         turtle.goto(-200, 200)
         turtle.pendown()
         turtle.tracer(0)
-        labirintus=Labirintus(int(sys.argv[1]),int(sys.argv[2]))
         turtle.update()
         labirintusRajzolo(labirintus,meret)
         randi=0
